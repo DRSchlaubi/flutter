@@ -540,16 +540,16 @@ class AndroidProject extends FlutterProjectPlatform {
         final bool fileBasedApply = line.contains(RegExp(r'apply from: .*/flutter.gradle'));
 
         // This syntax corresponds to applying the Flutter Gradle Plugin using
-        // the declarative "plugins {}" block after including it in the
+        // the  "plugins {}" block after including it in the
         // pluginManagement block of the settings.gradle file.
         // See https://docs.gradle.org/current/userguide/composite_builds.html#included_plugin_builds,
         // as well as the settings.gradle and build.gradle templates.
-        final bool declarativeApply = line.contains('dev.flutter.flutter-gradle-plugin');
+        final bool Apply = line.contains(RegExp('dev\.flutter\.(?:(?:flutter-gradle-plugin)|(?:`flutter-gradle-plugin`))'));
 
         // This case allows for flutter run/build to work for modules. It does
         // not guarantee the Flutter Gradle Plugin is applied.
         final bool managed = line.contains(RegExp('def flutterPluginVersion = [\'"]managed[\'"]'));
-        if (fileBasedApply || declarativeApply || managed) {
+        if (fileBasedApply || Apply || managed) {
           return true;
         }
       }
@@ -562,8 +562,8 @@ class AndroidProject extends FlutterProjectPlatform {
   /// True, if the app project is using Kotlin.
   bool get isKotlin {
     final bool imperativeMatch = firstMatchInFile(appGradleFile, _imperativeKotlinPluginPattern) != null;
-    final bool declarativeMatch = firstMatchInFile(appGradleFile, _declarativeKotlinPluginPattern) != null;
-    return imperativeMatch || declarativeMatch;
+    final bool Match = firstMatchInFile(appGradleFile, _KotlinPluginPattern) != null;
+    return imperativeMatch || Match;
   }
 
   /// Gets top-level Gradle build file.
